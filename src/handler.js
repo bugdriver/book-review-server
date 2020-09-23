@@ -1,5 +1,6 @@
 const axios = require('axios');
 const uuid = require('uuid');
+const { getGithubUser } = require('./authUtils');
 const { getClientId, getClientSecret, getReactHost } = require('../config');
 
 const signIn = (req, res) => {
@@ -8,7 +9,7 @@ const signIn = (req, res) => {
   );
 };
 
-const authorizeUser = (req, res) => {
+const confirm = (req, res) => {
   const { code } = req.query;
   axios({
     url: `https://github.com/login/oauth/access_token`,
@@ -25,29 +26,68 @@ const authorizeUser = (req, res) => {
   });
 };
 
-const getUser = (req, res) => {
+const authorizeUser = (req, res, next) => {
   const { sessions } = req.app.locals;
-  const accesToken = sessions[req.cookies.sId];
-  axios('https://api.github.com/user', {
-    headers: {
-      Authorization: `token ${accesToken}`
-    }
-  })
-    .then((response) => {
-      res.json(response.data);
-    })
-    .catch(() => {
-      res.status(401);
-      res.json({ message: 'bad request' });
-    });
+  const accessToken = sessions[req.cookies.sId];
+  if (!accessToken) {
+    res.status(403);
+    res.json({ message: 'unauthorized user' });
+    return;
+  }
+  getGithubUser(accessToken).then((response) => {
+    req.user = response.data;
+    next();
+  });
+};
+
+const getUser = (req, res) => {
+  res.json(req.user);
 };
 
 const getBooks = (req, res) => {
-  console.log('hellow');
   const { dataHandler } = req.app.locals;
   dataHandler.getBooks().then((books) => {
-    console.log(books);
     res.json(books);
+  });
+};
+
+const getBook = (req, res) => {
+  const { bookId } = req.query;
+  const { dataHandler } = req.app.locals;
+  dataHandler.getBook(bookId).then((books) => {
+    res.json(books);
+  });
+};
+
+const getReviewOfBook = (req, res) => {
+  const { bookId } = req.query;
+  const { dataHandler } = req.app.locals;
+  dataHandler.getReviewOfBook(bookId).then((reviews) => {
+    res.json(reviews);
+  });
+};
+
+const addReview = (req, res) => {
+  const review = req.body;
+  const { dataHandler } = req.app.locals;
+  dataHandler.addReview({ ...review, username: req.user.login }).then((id) => {
+    res.json({ lastId: id });
+  });
+};
+
+const updateReview = (req, res) => {
+  const { reviewId, reviewText } = req.body;
+  const { dataHandler } = req.app.locals;
+  dataHandler.updateReview(reviewId, reviewText).then((id) => {
+    res.json({ lastId: id });
+  });
+};
+
+const deleteReview = (req, res) => {
+  const { reviewId } = req.body;
+  const { dataHandler } = req.app.locals;
+  dataHandler.deleteReview(reviewId).then((id) => {
+    res.json({ lastId: id });
   });
 };
 
@@ -59,4 +99,16 @@ const logout = (req, res) => {
   res.redirect('/');
 };
 
-module.exports = { authorizeUser, getUser, logout, signIn, getBooks };
+module.exports = {
+  authorizeUser,
+  confirm,
+  getUser,
+  logout,
+  signIn,
+  getBooks,
+  getBook,
+  getReviewOfBook,
+  addReview,
+  deleteReview,
+  updateReview
+};

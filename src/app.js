@@ -11,14 +11,21 @@ const dbClient = new Pool({
 });
 app.locals.dataHandler = new DataHandler(dbClient);
 app.locals.sessions = {};
+app.use(express.static('images'));
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
 
 app.get('/api/signin', handler.signIn);
-app.get('/confirm', handler.authorizeUser);
-app.get('/api/getUser', handler.getUser);
+app.get('/confirm', handler.confirm);
+app.get('/api/getReviewOfBook', handler.getReviewOfBook);
 app.get('/api/getBooks', handler.getBooks);
+app.get('/api/getBook', handler.getBook);
+app.use(handler.authorizeUser);
+app.get('/api/getUser', handler.getUser);
+app.post('/api/addReview', handler.addReview);
+app.post('/api/deleteReview', handler.deleteReview);
+app.post('/api/updateReview', handler.updateReview);
 app.post('/api/logout', handler.logout);
 
 module.exports = app;

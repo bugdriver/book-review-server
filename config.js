@@ -13,7 +13,7 @@ const getReactHost = () => {
 };
 
 const getPgConnectionString = () => {
-  return env.connectionString;
+  return env.DATABASE_URL;
 };
 
 module.exports = {
