@@ -16,15 +16,21 @@ const confirm = (req, res) => {
     method: 'post',
     data: { client_id: getClientId(), client_secret: getClientSecret(), code },
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' }
-  }).then((response) => {
-    const accessToken = response.data.access_token;
-    const sId = uuid();
-    const { sessions } = req.app.locals;
-    sessions[sId] = accessToken;
-    res.cookie('sId', sId);
-    const reactHost = getReactHost() || '/';
-    res.redirect(reactHost);
-  });
+  })
+    .then((response) => {
+      const accessToken = response.data.access_token;
+      const sId = uuid();
+      const { sessions } = req.app.locals;
+      sessions[sId] = accessToken;
+      res.cookie('sId', sId);
+      console.log('came raj');
+      const reactHost = getReactHost() || '/';
+      res.redirect(reactHost);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.redirect(reactHost);
+    });
 };
 
 const authorizeUser = (req, res, next) => {
