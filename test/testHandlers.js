@@ -5,7 +5,7 @@ const { fillTestData } = require('../db/fillTestData');
 
 describe('handlers', function() {
   before(() => {
-    fillTestData(app.locals.dataHandler);
+    fillTestData().then(console.log);
   });
   context('/api/getBooks', function() {
     it('getBooks from api', function(done) {

@@ -1,17 +1,10 @@
-const { exec } = require('child_process');
+const { execSync } = require('child_process');
 const { getPgConnectionString } = require('../config');
 
 const fillTestData = () => {
-  exec(
-    `psql ${getPgConnectionString()} -f db/fillTestData.sql`,
-    (err, stdout, stderr) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log(stdout);
-    }
-  );
+  return new Promise((resolve, reject) => {
+    execSync(`psql ${getPgConnectionString()} -f db/fillTestData.sql`);
+  });
 };
 
 module.exports = { fillTestData };
