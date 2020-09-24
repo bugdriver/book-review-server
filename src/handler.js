@@ -22,7 +22,8 @@ const confirm = (req, res) => {
     const { sessions } = req.app.locals;
     sessions[sId] = accessToken;
     res.cookie('sId', sId);
-    res.redirect(getReactHost());
+    const reactHost = getReactHost() || '/';
+    res.redirect(reactHost);
   });
 };
 
