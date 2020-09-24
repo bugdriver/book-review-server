@@ -8,7 +8,7 @@ describe('handlers', function() {
     fillTestData().then(console.log);
   });
   context('/api/getBooks', function() {
-    it('getBooks from api', function(done) {
+    it('should give all book details', function(done) {
       request(app)
         .get('/api/getBooks')
         .expect([
