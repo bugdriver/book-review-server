@@ -3,7 +3,9 @@ const { getPgConnectionString } = require('../config');
 
 const fillTestData = () => {
   return new Promise((resolve, reject) => {
-    execSync(`psql ${getPgConnectionString()} -f db/fillTestData.sql`);
+    execSync(
+      `psql ${getPgConnectionString()} -f db/fillTestData.sql > /dev/null 2>&1`
+    );
   });
 };
 
