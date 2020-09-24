@@ -1,8 +1,9 @@
 const { exec } = require('child_process');
+const { getPgConnectionString } = require('../config');
 
 const fillTestData = () => {
   exec(
-    'psql postgres -U rajdb -f db/fillTestData.sql',
+    `psql ${getPgConnectionString()} -f db/fillTestData.sql`,
     (err, stdout, stderr) => {
       if (err) {
         console.error(err);
