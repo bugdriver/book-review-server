@@ -11,6 +11,7 @@ const signIn = (req, res) => {
 
 const confirm = (req, res) => {
   const { code } = req.query;
+  console.log(getClientId(), getClientSecret());
   axios({
     url: `https://github.com/login/oauth/access_token`,
     method: 'post',
@@ -24,12 +25,12 @@ const confirm = (req, res) => {
       sessions[sId] = accessToken;
       res.cookie('sId', sId);
       console.log('came raj');
-      const reactHost = getReactHost() || '/';
-      res.redirect(reactHost);
+      res.redirect(getReactHost());
     })
     .catch((err) => {
+      console.log('came error');
       console.log(err);
-      res.redirect(reactHost);
+      res.redirect(getReactHost());
     });
 };
 
