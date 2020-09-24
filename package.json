@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "export ENV=DEV;source .env;node server.js",
-    "test": "export ENV=TEST;source .env;nyc mocha test"
+    "test": "export ENV=TEST;source .env;nyc mocha"
   },
   "repository": {
     "type": "git",
