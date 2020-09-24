@@ -4,5 +4,5 @@ node_js:
 services:
   - postgresql
 before_script:
-  - psql -c "CREATE DATABASE bookreviewtest;" -U postgres
   - psql -c "CREATE USER rajdb WITH PASSWORD '123';" -U postgres
+  - psql -c "CREATE DATABASE bookreviewtest;" -U rajdb

@@ -8,6 +8,7 @@ const fillTestData = () => {
         console.error(err);
         return;
       }
+      console.log(stdout);
     }
   );
 };
