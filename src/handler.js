@@ -1,5 +1,5 @@
 const axios = require('axios');
-const uuid = require('uuid');
+const uuid = require('uuid').v4;
 const { getGithubUser } = require('./authUtils');
 const { getClientId, getClientSecret, getReactHost } = require('../config');
 
