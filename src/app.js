@@ -23,6 +23,7 @@ app.get('/api/getBooks', handler.getBooks);
 app.get('/api/getBook', handler.getBook);
 app.use(handler.authorizeUser);
 app.get('/api/getUser', handler.getUser);
+app.post('/api/addBook', handler.addBook);
 app.post('/api/addReview', handler.addReview);
 app.post('/api/deleteReview', handler.deleteReview);
 app.post('/api/updateReview', handler.updateReview);

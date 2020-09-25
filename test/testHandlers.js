@@ -5,7 +5,7 @@ const { fillTestData } = require('../db/fillTestData');
 
 describe('handlers', function() {
   before(() => {
-    fillTestData().then(console.log);
+    fillTestData().then();
   });
   context('/api/getBooks', function() {
     it('should give all book details', function(done) {

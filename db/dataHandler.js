@@ -40,6 +40,17 @@ class DataHandler {
   deleteReview(reviewId) {
     return this.query(queries.deleteReview, [reviewId]);
   }
+
+  addBook(bookDetail) {
+    const { title, writer, description, bookimage, addedby } = bookDetail;
+    return this.query(queries.addBook, [
+      title,
+      writer,
+      description,
+      addedby,
+      bookimage
+    ]);
+  }
 }
 
 module.exports = DataHandler;

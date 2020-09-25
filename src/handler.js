@@ -1,6 +1,7 @@
 const axios = require('axios');
 const uuid = require('uuid').v4;
 const { getGithubUser } = require('./authUtils');
+const IncomingForm = require('formidable').IncomingForm;
 const { getClientId, getClientSecret, getReactHost } = require('../config');
 
 const signIn = (req, res) => {
@@ -79,6 +80,28 @@ const addReview = (req, res) => {
   });
 };
 
+const addBook = (req, res) => {
+  const { dataHandler } = req.app.locals;
+  const form = new IncomingForm();
+  const bookDetails = { addedby: req.user.login };
+  form.on('field', (name, field) => {
+    bookDetails[name] = field;
+  });
+
+  form.on('fileBegin', (name, file) => {
+    file.path = process.cwd() + '/images/uploads/' + file.name;
+    bookDetails['bookimage'] = `/uploads/${file.name}`;
+  });
+
+  form.on('end', () => {
+    dataHandler.addBook(bookDetails).then(() => {
+      res.json({ bookAdded: true });
+    });
+  });
+
+  form.parse(req);
+};
+
 const updateReview = (req, res) => {
   const { reviewId, reviewText } = req.body;
   const { dataHandler } = req.app.locals;
@@ -114,5 +137,6 @@ module.exports = {
   getReviewOfBook,
   addReview,
   deleteReview,
-  updateReview
+  updateReview,
+  addBook
 };

@@ -8,5 +8,7 @@ module.exports = {
                        from reviews where book_id=$1`,
   addReview: `insert into reviews(username,book_id,review_text) values($1,$2,$3)`,
   deleteReview: 'delete from reviews where review_id=$1',
-  updateReview: 'update reviews set review_text=$1 where review_id=$2'
+  updateReview: 'update reviews set review_text=$1 where review_id=$2',
+  addBook:
+    'insert into books(title,writer,description,addedby,front_image) values($1,$2,$3,$4,$5)'
 };
