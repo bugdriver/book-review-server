@@ -46,6 +46,7 @@ const authorizeUser = (req, res, next) => {
 };
 
 const getUser = (req, res) => {
+  console.log(req.user);
   res.json(req.user);
 };
 
