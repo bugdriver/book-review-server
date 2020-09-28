@@ -1,2 +1,2 @@
 # book-review-server
-![travise status](https://travis-ci.org/bugdriver/book-review-server.svg?branch=master&status=passed)
+![travise status](https://travis-ci.com/bugdriver/book-review-server.svg?token=vqsAz3uBxvVsCdaKe4KC&branch=master&status=passed)
